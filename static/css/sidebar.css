@@ -474,20 +474,26 @@ body {
 }
 
 /* ==========================================
-   FOOTER
+   FOOTER - ✅ CORREGIDO
    ========================================== */
 
 .footer {
     background-color: #1a1a1a !important; 
     color: #ffffff !important;
     padding: 20px 0;
-    position: relative;
-    z-index: 10; 
+    position: relative; /* ✅ Mantiene el flujo del documento */
+    z-index: 10;
+    margin-left: var(--sidebar-width-collapsed); /* ✅ Alineado con el sidebar contraído */
+    margin-top: 3rem; /* ✅ Espacio superior para separarlo del contenido */
+    width: calc(100% - var(--sidebar-width-collapsed)); /* ✅ Ocupa el espacio disponible */
+    transition: margin-left var(--transition-speed) ease, width var(--transition-speed) ease;
 }
 
+/* ✅ Cuando el sidebar se expande, el footer también se ajusta */
 .sidebar.expanded ~ .footer,
 .sidebar.pinned ~ .footer {
     margin-left: var(--sidebar-width-expanded);
+    width: calc(100% - var(--sidebar-width-expanded));
 }
 
 .footer-content {
@@ -620,6 +626,7 @@ body {
     .main-content,
     .footer {
         margin-left: 0 !important;
+        width: 100% !important; /* ✅ En móvil ocupa todo el ancho */
     }
 
     .footer-content {
