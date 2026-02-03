@@ -474,26 +474,41 @@ body {
 }
 
 /* ==========================================
-   FOOTER - ✅ CORREGIDO
+   FOOTER - ✅✅ SOLUCIÓN DEFINITIVA
    ========================================== */
 
 .footer {
     background-color: #1a1a1a !important; 
     color: #ffffff !important;
-    padding: 20px 0;
-    position: relative; /* ✅ Mantiene el flujo del documento */
-    z-index: 10;
-    margin-left: var(--sidebar-width-collapsed); /* ✅ Alineado con el sidebar contraído */
-    margin-top: 3rem; /* ✅ Espacio superior para separarlo del contenido */
-    width: calc(100% - var(--sidebar-width-collapsed)); /* ✅ Ocupa el espacio disponible */
-    transition: margin-left var(--transition-speed) ease, width var(--transition-speed) ease;
+    padding: 20px 0 !important;
+    
+    /* CRÍTICO: Posicionamiento */
+    position: static !important; /* Forzar static para que esté en el flujo */
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    
+    /* Alineación y espacio */
+    margin-left: var(--sidebar-width-collapsed) !important;
+    margin-top: 4rem !important;
+    width: calc(100% - var(--sidebar-width-collapsed)) !important;
+    
+    /* Flexbox */
+    flex-shrink: 0 !important;
+    
+    /* Z-index bajo */
+    z-index: 1 !important;
+    
+    /* Transiciones */
+    transition: margin-left var(--transition-speed) ease, 
+                width var(--transition-speed) ease !important;
 }
 
-/* ✅ Cuando el sidebar se expande, el footer también se ajusta */
+/* Cuando el sidebar se expande */
 .sidebar.expanded ~ .footer,
 .sidebar.pinned ~ .footer {
-    margin-left: var(--sidebar-width-expanded);
-    width: calc(100% - var(--sidebar-width-expanded));
+    margin-left: var(--sidebar-width-expanded) !important;
+    width: calc(100% - var(--sidebar-width-expanded)) !important;
 }
 
 .footer-content {

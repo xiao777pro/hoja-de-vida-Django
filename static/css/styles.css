@@ -9,7 +9,14 @@ p, h1, h2, h3, h4, h5, h6, span {
     word-wrap: break-word;
 }
 
-/* Estilos Generales */
+/* ==========================================
+   SOLUCIÓN DEFINITIVA DEL FOOTER
+   ========================================== */
+
+html {
+    height: 100%;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: transparent !important;
@@ -17,10 +24,12 @@ body {
     display: flex;
     flex-direction: column;
     line-height: 1.8;
+    position: relative;
 }
 
+/* El main debe ocupar todo el espacio disponible y empujar el footer abajo */
 main {
-    flex: 1;
+    flex: 1 0 auto; /* Esto es CRÍTICO - hace que el main crezca */
 }
 
 /* Aumentar espaciado entre elementos */
@@ -194,9 +203,10 @@ a:hover {
     margin-left: 0.5rem;
 }
 
-/* Footer */
+/* Footer - CORRECCIÓN DEFINITIVA */
 footer {
-    margin-top: auto;
+    margin-top: auto; /* Esto empuja el footer al final */
+    flex-shrink: 0; /* El footer no se encoge */
     background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(5px);
 }
