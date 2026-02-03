@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - Hoja de Vida{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-5 text-center">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold section-title-prod">
+                <i class="bi bi-journal-text"></i> Productos Académicos
+            </h1>
+            <p class="text-muted">Recursos, investigaciones y materiales desarrollados durante mi formación.</p>
+            <div class="custom-hr-prod mx-auto"></div>
+        </div>
+    </div>
+
+    {% if productos %}
+    <div class="row justify-content-center">
+        {% for producto in productos %}
+        <div class="col-lg-10 mb-4">
+            <div class="product-card-sky shadow-sm">
+                <div class="product-header-flex">
+                    <div class="product-title-area">
+                        <h3 class="product-name">{{ producto.nombrerecurso }}</h3>
+                        <span class="badge-sky-tag">
+                            <i class="bi bi-tag-fill"></i> {{ producto.clasificador }}
+                        </span>
+                    </div>
+                </div>
+                
+                <hr class="soft-hr-sky">
+                
+                <div class="product-body">
+                    <h6 class="text-uppercase small fw-bold text-muted mb-2">
+                        <i class="bi bi-card-text"></i> Descripción:
+                    </h6>
+                    <p class="product-desc">{{ producto.descripcion }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-sky-pastel text-center mx-auto" style="max-width: 600px;">
+        <i class="bi bi-info-circle"></i> No hay productos académicos registrados.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

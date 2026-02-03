@@ -1,0 +1,516 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    /* 1. EFECTO CRISTAL: Solo para el recuadro de foto y descripción */
+    .perfil-hero {
+        background: rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(8px) saturate(150%);
+        -webkit-backdrop-filter: blur(8px) saturate(150%);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 40px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    /* 2. FONDO BLANCO: Para las tarjetas de datos, contacto y ubicación */
+    .info-card {
+        background-color: #ffffff !important;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        height: 100%;
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Ajustes de texto para legibilidad sobre el cristal */
+    .perfil-nombre {
+        color: #1a202c;
+        font-weight: 800;
+        text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+    }
+
+    .perfil-descripcion {
+        color: #4a5568;
+        font-weight: 500;
+    }
+
+    /* Botón con el Azul Tiffany*/
+    .btn-descargar-cv {
+        background-color: #81d8d0; 
+        color: #000;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .btn-descargar-cv:hover {
+        background-color: #a6ce39;
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+
+{% block title %}Perfil Profesional - {{ perfil.nombres }} {{ perfil.apellidos }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="perfil-hero">
+    <div class="container">
+        <div class="perfil-foto-container">
+            {% if perfil.foto_perfil %}
+                <img src="{{ perfil.foto_perfil.url }}" alt="{{ perfil.nombres }}" class="perfil-foto">
+            {% else %}
+                <img src="{% static 'images/default-avatar.png' %}" alt="Foto de perfil" class="perfil-foto">
+            {% endif %}
+        </div>
+        
+        <div class="text-center">
+            <h1 class="perfil-nombre">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
+            {% if perfil.descripcionperfil %}
+                <p class="perfil-descripcion">{{ perfil.descripcionperfil }}</p>
+            {% endif %}
+            <button class="btn-descargar-cv" data-bs-toggle="modal" data-bs-target="#pdfModal">
+                <i class="bi bi-file-earmark-pdf-fill"></i>
+                Descargar Hoja de Vida
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Información Personal -->
+<div class="container info-personal-section">
+    <div class="row g-4">
+        <!-- Datos Personales -->
+        <div class="col-lg-4 col-md-6">
+            <div class="info-card">
+                <h3 class="info-card-title">
+                    <i class="bi bi-person-circle"></i>
+                    Datos Personales
+                </h3>
+                
+                {% if perfil.numerocedula %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-card-text"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Cédula</div>
+                        <div class="info-value">{{ perfil.numerocedula }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.nacionalidad %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-flag"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Nacionalidad</div>
+                        <div class="info-value">{{ perfil.nacionalidad }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.fechanacimiento %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Fecha de Nacimiento</div>
+                        <div class="info-value">{{ perfil.fechanacimiento|date:"d M, Y" }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.lugarnacimiento %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Lugar de Nacimiento</div>
+                        <div class="info-value">{{ perfil.lugarnacimiento }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.sexo %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-gender-ambiguous"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Sexo</div>
+                        <div class="info-value">{{ perfil.get_sexo_display }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.estadocivil %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-heart"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Estado Civil</div>
+                        <div class="info-value">{{ perfil.estadocivil }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.licenciaconducir %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-car-front"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Licencia de Conducir</div>
+                        <div class="info-value">{{ perfil.licenciaconducir }}</div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Contacto -->
+        <div class="col-lg-4 col-md-6">
+            <div class="info-card">
+                <h3 class="info-card-title">
+                    <i class="bi bi-telephone"></i>
+                    Contacto
+                </h3>
+                
+                {% if perfil.telefonoconvencional %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-phone"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Tel. Móvil</div>
+                        <div class="info-value">{{ perfil.telefonoconvencional }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.telefonofijo %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-telephone-fill"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Tel. Fijo</div>
+                        <div class="info-value">{{ perfil.telefonofijo }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.sitioweb %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-globe"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Sitio Web</div>
+                        <div class="info-value">
+                            <a href="{{ perfil.sitioweb }}" target="_blank">{{ perfil.sitioweb }}</a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Ubicación -->
+        <div class="col-lg-4 col-md-6">
+            <div class="info-card">
+                <h3 class="info-card-title">
+                    <i class="bi bi-geo-alt"></i>
+                    Ubicación
+                </h3>
+                
+                {% if perfil.direcciondomiciliaria %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-house-door"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Dirección Domiciliaria</div>
+                        <div class="info-value">{{ perfil.direcciondomiciliaria }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if perfil.direcciontrabajo %}
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <div class="info-content">
+                        <div class="info-label">Dirección de Trabajo</div>
+                        <div class="info-value">{{ perfil.direcciontrabajo }}</div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Secciones de Preview en Grid 3x2 -->
+<div class="container">
+    <div class="row g-4 mb-5">
+        <!-- Experiencia Laboral Preview -->
+        {% if config.mostrar_experiencia %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact border-lavanda">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-briefcase-fill"></i>
+                        Experiencia
+                    </h3>
+                    <a href="{% url 'curriculum:experiencia_laboral' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for exp in experiencias|slice:":3" %}
+                    <li class="preview-list-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-circle-fill me-2" style="font-size: 0.5rem; color: #818cf8;"></i>{{ exp.cargodesempenado }}</span>
+                        <small class="text-muted ms-2" style="font-size: 0.75rem;">
+                            {{ exp.fechainiciogestion|date:"Y" }} - 
+                            {% if exp.fechafingestion %}
+                                {{ exp.fechafingestion|date:"Y" }}
+                            {% else %}
+                                Presente
+                            {% endif %}
+                        </small>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay experiencias registradas</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if experiencias|length > 3 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:experiencia_laboral' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Reconocimientos Preview -->
+        {% if config.mostrar_reconocimientos %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact border-amarillo">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-trophy-fill"></i>
+                        Reconocimientos
+                    </h3>
+                    <a href="{% url 'curriculum:reconocimientos' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for rec in reconocimientos|slice:":2" %}
+                    <li class="preview-list-item-extended">
+                        <div class="logro-tipo">
+                            <i class="bi bi-award"></i>
+                            {{ rec.tiporeconocimiento }}
+                        </div>
+                        <div class="logro-fecha">{{ rec.fechareconocimiento|date:"Y" }}</div>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay reconocimientos registrados</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if reconocimientos|length > 2 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:reconocimientos' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Cursos Preview -->
+        {% if config.mostrar_cursos %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact border-menta">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-book-fill"></i>
+                        Cursos
+                    </h3>
+                    <a href="{% url 'curriculum:cursos_realizados' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for curso in cursos|slice:":3" %}
+                    <li class="preview-list-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-circle-fill me-2" style="font-size: 0.5rem; color: #10b981;"></i>{{ curso.nombrecurso }}</span>
+                        <span class="badge rounded-pill ms-2" style="background-color: #d1fae5; color: #10b981; font-size: 0.7rem;">
+                            {{ curso.totalhoras }}h
+                        </span>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay cursos registrados</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if cursos|length > 3 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:cursos_realizados' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Productos Académicos Preview -->
+        {% if config.mostrar_productos_academicos %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact border-cielo">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-journal-text"></i>
+                        Académicos
+                    </h3>
+                    <a href="{% url 'curriculum:productos_academicos' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for prod in productos_academicos|slice:":3" %}
+                    <li class="preview-list-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-truncate" style="font-size: 0.9rem; max-width: 70%;">
+                            {{ prod.nombrerecurso }}
+                        </span>
+                        <small class="ms-2 text-end" style="color: #0ea5e9; font-weight: 600; font-size: 0.75rem; white-space: nowrap;">
+                            <i class="bi bi-tag-fill"></i> {{ prod.clasificador }}
+                        </small>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay productos académicos registrados</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if productos_academicos|length > 3 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:productos_academicos' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Productos Laborales Preview -->
+        {% if config.mostrar_productos_laborales %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact border-salmon">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-folder-fill"></i>
+                        Laborales
+                    </h3>
+                    <a href="{% url 'curriculum:productos_laborales' %}" class="btn-ver-mas-compact">
+                        Ver más <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <ul class="preview-list">
+                    {% for prod in productos_laborales|slice:":3" %}
+                    <li class="preview-list-item d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-circle-fill me-2" style="font-size: 0.5rem; color: #f43f5e;"></i>{{ prod.nombreproducto }}</span>
+                        <small class="text-muted ms-2" style="font-size: 0.75rem;">
+                            <i class="bi bi-calendar3"></i> {{ prod.fechaproducto|date:"m/Y" }}
+                        </small>
+                    </li>
+                    {% empty %}
+                    <li class="preview-list-empty">No hay productos laborales registrados</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if productos_laborales|length > 3 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:productos_laborales' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todas
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Venta Garage Preview -->
+        {% if config.mostrar_venta_garage %}
+        <div class="col-lg-4 col-md-6">
+            <div class="preview-section-compact border-lila">
+                <div class="section-header-compact">
+                    <h3 class="section-title-compact">
+                        <i class="bi bi-cart-fill"></i>
+                        Garage
+                    </h3>
+                    <a href="{% url 'curriculum:venta_garage' %}" class="btn-ver-mas-compact">
+                        Ir al Garage <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="garage-preview-mini">
+                    {% for prod in productos_garage|slice:":4" %}
+                    <div class="garage-mini-item">
+                        {% if prod.imagen_producto %}
+                            <img src="{{ prod.imagen_producto.url }}" alt="{{ prod.nombreproducto }}">
+                        {% else %}
+                            <div class="garage-no-image">
+                                <i class="bi bi-image"></i>
+                            </div>
+                        {% endif %}
+                        <span class="garage-mini-name">{{ prod.nombreproducto|truncatewords:2 }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="preview-list-empty">No hay productos en venta</p>
+                    {% endfor %}
+                </div>
+                
+                {% if productos_garage|length > 4 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'curriculum:venta_garage' %}" class="link-ver-todas">
+                        <i class="bi bi-arrow-right-circle"></i> Ver todos
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
