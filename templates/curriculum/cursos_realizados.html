@@ -63,11 +63,8 @@
                         <div class="pdf-preview-container">
                             {% if curso.rutacertificado %}
                                 <div class="ratio ratio-4x3 mb-3 shadow-sm rounded overflow-hidden bg-white">
-                                    <object data="{{ curso.rutacertificado.url }}" type="application/pdf" width="100%" height="100%">
-                                        <p>Tu navegador no puede mostrar el PDF. 
-                                            <a href="{{ curso.rutacertificado.url }}">Descárgalo aquí</a>.
-                                        </p>
-                                    </object>
+                                    <iframe src="{{ curso.rutacertificado.url }}" width="100%" height="100%" style="border:none;">
+                                    </iframe>
                                 </div>
                                 
                                 <a href="{{ curso.rutacertificado.url }}" target="_blank" class="btn-pdf-new-tab">
