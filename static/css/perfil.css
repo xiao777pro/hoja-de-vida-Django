@@ -1,3 +1,4 @@
+/* En static/css/perfil.css */
 /* ==========================================
    PERFIL PROFESIONAL - LANDING PAGE
    ========================================== */
@@ -10,6 +11,12 @@
     --text-muted: #7f8c8d;
     --border-color: #e0e0e0;
     --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card-no-profile {
+    background: #f8fafc;
+    border-left: 5px solid #81d8d0 !important; /* El azul Tiffany */
+    animation: fadeInUp 0.8s ease-out;
 }
 
 /* ==========================================

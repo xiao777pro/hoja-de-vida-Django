@@ -57,12 +57,64 @@
         background-color: #a6ce39;
         transform: scale(1.05);
     }
+
+    .layout-sin-menu #sidebar, 
+    .layout-sin-menu .sidebar, 
+    .layout-sin-menu #btnMobileMenu {
+        display: none !important;
+    }
+
+    .layout-sin-menu .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    .layout-sin-menu .footer {
+        left: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Estilos de la tarjeta de aviso */
+    .no-profile-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .no-profile-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        max-width: 500px;
+        border: 1px solid rgba(129, 216, 208, 0.3);
+    }
+
+    .btn-admin-direct {
+        background-color: #81d8d0;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-admin-direct:hover {
+        background-color: #6bc4bc;
+        transform: translateY(-2px);
+        color: white;
+    }
 </style>
 {% endblock %}
 
 {% block title %}Perfil Profesional - {{ perfil.nombres }} {{ perfil.apellidos }}{% endblock %}
 
 {% block content %}
+{% if perfil %}
 <!-- Hero Section -->
 <section class="perfil-hero">
     <div class="container">
@@ -512,5 +564,21 @@
         {% endif %}
     </div>
 </div>
+
+{% else %}
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+        <div class="no-profile-card text-center p-5 shadow-sm" style="max-width: 600px; width: 100%;">
+            <i class="bi bi-person-exclamation" style="font-size: 4rem; color: #81d8d0;"></i>
+            <h2 class="mt-4 fw-bold">Perfil en Construcción</h2>
+            <p class="text-muted mb-4">
+                Aún no has completado tu información de perfil profesional. 
+                Para que otros puedan ver tu CV y datos de contacto, por favor regístralos en el panel administrativo.
+            </p>
+            <a href="/admin/curriculum/datospersonales/add/" class="btn-admin-direct">
+                <i class="bi bi-plus-circle me-2"></i>Crear mi Perfil Ahora
+            </a>
+        </div>
+    </div>
+{% endif %}
 
 {% endblock %}
